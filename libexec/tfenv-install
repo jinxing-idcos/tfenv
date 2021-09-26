@@ -73,14 +73,14 @@ declare regex="${resolved##*\:}";
 
 log 'debug' "Processing install for version ${version}, using regex ${regex}";
 
-version="$(tfenv-list-remote | grep -e "${regex}" | head -n 1)";
-[ -n "${version}" ] || log 'error' "No versions matching '${requested}' found in remote";
-
 dst_path="${TFENV_CONFIG_DIR}/versions/${version}";
 if [ -f "${dst_path}/terraform" ]; then
   echo "Terraform v${version} is already installed";
   exit 0;
 fi;
+
+version="$(tfenv-list-remote | grep -e "${regex}" | head -n 1)";
+[ -n "${version}" ] || log 'error' "No versions matching '${requested}' found in remote";
 
 # Add support of ARM64 for Linux & Apple Silicon
 case "$(uname -m)" in
